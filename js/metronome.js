@@ -405,7 +405,7 @@ function playing(){
     if(tapbut==1){
          tapcyc_0 += 1.0/cnt[x];
          tapcyc = Math.round(tapcyc_0);
-        document.getElementById("tap").value ="Mark Transition 2 at beatcycle " + tapcyc; 
+        document.getElementById("tap").value ="Mark Transition 2 at beatcycle " + tapcyc +' ('+tapcyc_0+')' ; 
     }
     beat=playlist[0];
     console.log(playlist[0]);
