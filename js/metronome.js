@@ -1,5 +1,5 @@
-var strokes_csv = "../assets/csv/strokes.csv";
-var beatcycle_csv = "../assets/csv/beatcycle.csv";
+var strokes_csv = "./assets/csv/strokes.csv";
+var beatcycle_csv = "./assets/csv/beatcycle.csv";
 var strokes ={};
 var dict ={};
 var style = []; 
