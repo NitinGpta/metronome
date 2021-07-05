@@ -4,11 +4,13 @@ var strokes ={};
 var dict ={};
 var style = []; 
 var beatCycle = [];
+var beatCycles = [];
 var beatCyclet = [];
 var tranenabled = [];
-
-    
-
+var filler =[];
+var fillert =[];
+var firstplayed;    
+var fillers =[];
 $.ajax({
 
     type: 'GET',
@@ -24,13 +26,9 @@ $.ajax({
 
     success: function (data) {
         
-        if(data==undefined){
-            console.log(data);
-        }
+        
 
         var jsonData = $.csv.toObjects(data);
-
-        console.log(jsonData);
         var b=0;
 
         $.each(jsonData, function (index, value) {
@@ -52,19 +50,17 @@ $.ajax({
             },
         
             success: function (data) {
-                
-                if(data==undefined){
-                    console.log(data);
-                }
-        
+            
                 var jsonData1 = $.csv.toObjects(data);
-        
-                console.log(jsonData1);
+            
                 var b=-1;
         
                 $.each(jsonData1, function (index, value) {
                     b++;
                     style.push(value["Style"]);
+                    fillers.push(parseInt(value["Total Number of Beats in Transition"]));
+                   
+                    beatCycles.push(parseInt(value["Total Number of Beats"]));
                     var q=2;
                     var temp_beat_cycle =[];
                     var temp_speed =[];
@@ -97,54 +93,51 @@ $.ajax({
                     }
                     beatCyclet.push(temp_speed);
                     beatCycle.push(temp_beat_cycle);
-                    
-                    /*temp_beat_cycle =[];
-                    temp_speed =[];
+                 
                     q=2;
-                    if(value["Transition Cycle"].length!=0){
+                    temp_beat_cycle =[];
+                    temp_speed =[];
+                    var flag2=0;
+                    while(q<value["Transition Cycle"].length){
                         tranenabled.push(1);
-                        if(parseInt(value["Anchor Point"])+parseInt(value["Total No. Of beats in Transition"]<parseInt(value["Total Number of Beats"]))){
-                            for(w=0;w<parseInt(value["Anchor Point"])-1;w++){
-                                temp_beat_cycle.push(beatCycle[b][w]);
-
-                            }
-                            while(q<value["Transition Cycle"].length){
-                                var flag=1;
-                                count =0;
-                                while(flag==1){
-                                    flag=0;
-                                    count++;
-                                    var tempcyc ="";
-                                    var temp_beat =[];
-                                    for(;value["Transition Cycle"][q]!=']';q++){
-                                        if(value["Transition Cycle"][q]== ' '){
-                                            flag=1;
-                                            q++;
-                                            break;
-                                        }
-                                        tempcyc+= value["Transition Cycle"][q];
-                                    }
-                                    temp_beat.push(strokes[tempcyc]);
-                                    temp_beat_cycle.push(temp_beat);
+                        flag2=1;
+                        var flag=1;
+                        count =0;
+                        while(flag==1){
+                            flag=0;
+                            count++;
+                            var tempcyc ="";
+                            var temp_beat =[];
+                            for(;value["Transition Cycle"][q]!=']';q++){
+                                if(value["Transition Cycle"][q]== ' '){
+                                    flag=1;
+                                    q++;
+                                    break;
                                 }
-                                
-                                for(y=1;y<=count;y++){
-                                    temp_speed.push(count);
-                                }
-                                q=q+2;
+                                tempcyc+= value["Transition Cycle"][q];
                             }
-                            for(w=parseInt(value["Anchor Point"])+parseInt(value["Total No. Of beats in Transition"]);w<value["Total Number of Beats"];w++){
-
-                            }
-
+                            temp_beat.push(strokes[tempcyc]);
+                            temp_beat_cycle.push(temp_beat);
                         }
-                    }
-                    else{
-                        tranenabled.push(0);
-                    }*/
+                        
+                        for(y=1;y<=count;y++){
+                            temp_speed.push(count);
+                        }
                     
-                });
-                console.log(beatCycle);
+                        
+                        q=q+2;
+                    }
+                    if(flag2==0){
+                        tranenabled.push(0);
+                    }
+                    fillert.push(temp_speed);
+                    filler.push(temp_beat_cycle);
+                  
+                              
+                
+            });
+
+
                 
 
 
@@ -156,7 +149,7 @@ $.ajax({
 
 }); // end: of Ajax call
 
-var dha_k = new Audio('assets/audio/dha_k.wav');
+/*var dha_k = new Audio('assets/audio/dha_k.wav');
 var tin = new Audio('assets/audio/tin.wav');
 var tin_0 = new Audio('assets/audio/tin.wav');
 var dha_m = new Audio('assets/audio/dha_m.wav');
@@ -188,9 +181,9 @@ var te3 = new Audio('assets/audio/te.wav');
 var te4 = new Audio('assets/audio/te.wav');
 var pa = new Audio('assets/audio/na.wav');
 var blnk = new Audio('assets/audio/blnk.wav');
-var blnk0 = new Audio('assets/audio/blnk.wav');
+var blnk0 = new Audio('assets/audio/blnk.wav');*/
 
-//console.log(beat.length);
+
 var transcyc=[];
 
 
@@ -202,7 +195,7 @@ var transcyc=[];
 
 //var beatCycle3 = [[khi],[blnk],[khi0],[na],[dha_m],[ghe_soft],[dha_m0],[ghe_soft0],[dha_m1],[ghe_hard],[blnk],[blnk0],[na0],[te],[te0],[re],[te1],[re0],[na1]];
 //var beatCycle3t = [1,2,2,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,1];
-var tran3=[[te],[re],[khi],[ta],[dha_m],[te0],[re0],[khi0],[ta0],[dha_m0],[te1],[re1],[khi1],[ta1],[dha_m1],[blnk],[blnk0],[na],[te2],[te3],[re2],[te4],[re3],[na0]];
+/*var tran3=[[te],[re],[khi],[ta],[dha_m],[te0],[re0],[khi0],[ta0],[dha_m0],[te1],[re1],[khi1],[ta1],[dha_m1],[blnk],[blnk0],[na],[te2],[te3],[re2],[te4],[re3],[na0]];
 var tran3a= [2,2,2,2,1,2,2,2,2,1,2,2,2,2,1,1,1,1,1,2,2,2,2,1];
 
 
@@ -221,10 +214,9 @@ tranat.push(tran3a);
 trana.push(beatCycle[3]);
 tranat.push(beatCyclet[3]);
 
-console.log(trana);
-var cnt=[4,3,16,8];
-var mx=7;
-var temp=0;
+
+
+
 
 
 
@@ -242,7 +234,10 @@ var flag =0;
 var tapbut=0;
 var tapcyc=0;
 var tapcyc_0=0;
+var tapcyc_1=0;
+var tapcyc_2=0;
 var tp=0;
+var temp_tap_cyc_1;
 
 var audio;
 var t;
@@ -251,6 +246,8 @@ var playlistt=[];
 var beat=[];
 var i =0;
 
+var mx=7;
+var temp=0;
 
 
 
@@ -285,13 +282,13 @@ function stylechange(){
         document.getElementById("tap").value ="No Transition";
     }
    
-    console.log(x);
+   
 }
 
 function toggle(){
     var q = document.getElementById("start").value;
     if(q=="Start"){
-        console.log("s");
+       
         flag =1;
         document.getElementById("start").value = "Stop";
         playing();
@@ -312,6 +309,7 @@ audio =[];
 var flag1=0;
 var temp_bpm =0;
 var temp_bpm_velocity =0; 
+var esd;
 function addcycle(){
 
     k=0;
@@ -328,11 +326,12 @@ function addcycle(){
     if(flag1==1){
         bpm = temp_bpm;
         bpm_velocity = temp_bpm_velocity;
-        if(x==2&&temp_tapbut==2){
+        if(tranenabled[x]==1&&temp_tapbut==2){
             tapcyc =temp_tapcyc;
+            tapcyc_1 =temp_tapcyc_1;
             document.getElementById("tap").value =tapcyc;
             tapbut =2;
-            tp =0;
+            tp = 0;
         }
         else{
             tapbut=0;
@@ -343,39 +342,319 @@ function addcycle(){
         document.getElementById("style").value=x;
         flag1=0;
     }
-    mx=cnt[x];
+    mx=beatCycles[x];
     
-    if(x==0)document.getElementById("visual_style").innerHTML="The Current Playing style is Kartaal (4)" ;
-    else if(x==1)document.getElementById("visual_style").innerHTML="The Current Playing style is Kartaal (3)" ;
-    else if(x==2)document.getElementById("visual_style").innerHTML="The Current Playing style is Mridanga (16)" ;
-    else if(x==3)document.getElementById("visual_style").innerHTML="The Current Playing style is Mridanga  (8)" ;
+    document.getElementById("visual_style").innerHTML="The Current Playing style is "+style[x] ;
     var i =0;
    /* if(tapbut==1){
         tapcyc++;
         document.getElementById("tap").value ="Mark Transition 2 at beatcycle " + tapcyc; 
     }*/
-    console.log("tp"+ tp);
+
     if(tapbut==2){
         tp++;
         tp=tp%tapcyc;
-        console.log("tp"+ tp);
+        console.log(tapcyc_1);
         if(tapcyc<=1){
-            playlist = playlist.concat(trana[x]);
-            playlistt= playlistt.concat(tranat[x]);
-            return;
+            
+            if(fillers[x]+tapcyc_1<=beatCycles[x]){
+                var beatused=0;
+                var jk =0;
+                var countwe=0;
+                while(1){
+                    playlist.push(beatCycle[x][jk]);
+                    playlistt.push(beatCyclet[x][jk]);
+                    
+                    if(beatCyclet[x][jk]==2){
+                        countwe++;
+                    }
+                    jk++;
+                    if(countwe%2==0&&jk-countwe/2==tapcyc_1){
+                        break;
+                    }
+                }
+                beatused = jk-countwe/2;
+                countwe =0;
+                var jf =0;
+                while(1){
+                    playlist.push(filler[x][jf]);
+                    playlistt.push(fillert[x][jf]);
+                    
+                    if(filler[x][jf]==2){
+                        countwe++;
+                    }
+                    jf++;
+                    if(countwe%2==0&&jf==filler[x].length){
+                        break;
+                    }
+                }
+                countwe=0;
+                var jn=0;
+                while(1){
+                    if(beatCyclet[x][jk]==2){
+                        countwe++;
+                    }
+                    jk++;
+                    jn++;
+                    if(jn-countwe/2==fillers[x]){
+                        break;
+                    }
+                }
+                countwe=0;
+                var jh =0;
+                while(1){
+                    playlist.push(beatCycle[x][jk]);
+                    playlistt.push(beatCyclet[x][jk]);
+                    
+                    if(beatCyclet[x][jk]==2){
+                        countwe++;
+                    }
+                    jk++;
+                    jh++;
+                    if(countwe%2==0&&beatused+fillers[x]+jh-countwe/2==beatCycles[x]){
+                        break;
+                    }
+                }
+                
+                return;
+            }
+            else{
+                if(firstplayed){
+                    var beatused=0;
+                    var jk =0;
+                    var countwe=0;
+                    while(1){
+                        playlist.push(beatCycle[x][jk]);
+                        playlistt.push(beatCyclet[x][jk]);
+                        
+                        if(beatCyclet[x][jk]==2){
+                            countwe++;
+                        }
+                        jk++;
+                        if(countwe%2==0&&jk-countwe/2==tapcyc_1){
+                            break;
+                        }
+                    }
+                    beatused = jk-countwe/2;
+                    countwe =0;
+                    var jf =0;
+                    while(1){
+                        playlist.push(filler[x][jf]);
+                        playlistt.push(fillert[x][jf]);
+                        
+                        if(filler[x][jf]==2){
+                            countwe++;
+                        }
+                        jf++;
+                        if(countwe%2==0&&beatused+jf-countwe/2==beatCycles[x]){
+                            break;
+                        }
+                    }
+                    firstplayed = false;
+                    return;
+                }
+                else{
+                    var beatused=tapcyc_1+fillers[x]-beatCycles[x];
+                    var jk =0;
+                    var countwe=0;
+                    while(1){
+                        if(filler[x][jk]==2){
+                            countwe++;
+                        }
+                        jk++;
+                        if(countwe%2==0&&jk-countwe/2==beatCycles[x]-tapcyc_1){
+                            break;
+                        }
+                    }
+                    countwe==0;
+                    while(1){
+                        playlist.push(filler[x][jk]);
+                        playlistt.push(fillert[x][jk]);
+                        if(filler[x][jk]==2){
+                            countwe++;
+                        }
+                        jk++;
+                        if(countwe%2==0&&jk==filler[x].length){
+                            break;
+                        }
+                    }
+                    countwe=0;
+                    var jn =0;
+                    while(1){
+                        if(beatCyclet[x][jn]==2){
+                            countwe++;
+                        }
+                        jn++;
+                        if(countwe%2==0&&jn-countwe/2==beatused){
+                            break;
+                        }
+                    }
+                   beatused = jn-countwe/2;
+                   countwe=0;
+
+                    while(1){
+                        playlist.push(beatCycle[x][jn]);
+                        playlistt.push(beatCyclet[x][jn]);
+                        if(beatCyclet[x][jn]==2){
+                            countwe++;
+                        }
+                        jn++;
+                        if(countwe%2==0&&beatused+jn-countwe/2==tapcyc_1){
+                            break;
+                        }
+                    }
+                    countwe =0;
+                    var jf =0;
+                    while(1){
+                        playlist.push(filler[x][jf]);
+                        playlistt.push(fillert[x][jf]);
+                        
+                        if(filler[x][jf]==2){
+                            countwe++;
+                        }
+                        jf++;
+                        if(countwe%2==0&&beatused+jf-countwe/2==beatCycles[x]){
+                            break;
+                        }
+                    }
+                    return;
+
+                }
+
+            }
         }
         if(tp==0){
-            playlist = playlist.concat(trana[x]);
-            playlistt= playlistt.concat(tranat[x]);
-            console.log(playlist);
-            return;
+            if(fillers[x]+tapcyc_1<=beatCycles[x]){
+             
+                var beatused=0;
+                var jk =0;
+                var countwe=0;
+                while(1){
+                    playlist.push(beatCycle[x][jk]);
+                    playlistt.push(beatCyclet[x][jk]);
+                    
+                    if(beatCyclet[x][jk]==2){
+                        countwe++;
+                    }
+                    jk++;
+                    if(countwe%2==0&&jk-countwe/2==tapcyc_1){
+                        break;
+                    }
+                }
+                beatused = jk-countwe/2;
+                countwe =0;
+                var jf =0;
+                while(1){
+                    playlist.push(filler[x][jf]);
+                    playlistt.push(fillert[x][jf]);
+                    
+                    if(filler[x][jf]==2){
+                        countwe++;
+                    }
+                    jf++;
+                    if(countwe%2==0&&jf==filler[x].length){
+                        break;
+                    }
+                }
+                countwe=0;
+                var jn=0;
+                while(1){
+                    if(beatCyclet[x][jk]==2){
+                        countwe++;
+                    }
+                    jk++;
+                    jn++;
+                    if(jn-countwe/2==fillers[x]){
+                        break;
+                    }
+                }
+                countwe=0;
+                var jh =0;
+                while(1){
+                    playlist.push(beatCycle[x][jk]);
+                    playlistt.push(beatCyclet[x][jk]);
+                    
+                    if(beatCyclet[x][jk]==2){
+                        countwe++;
+                    }
+                    jk++;
+                    jh++;
+                    if(countwe%2==0&&beatused+fillers[x]+jh-countwe/2==beatCycles[x]){
+                        break;
+                    }
+                }
+                
+                return;
+            }
+            else{
+                var beatused=0;
+                var jk =0;
+                var countwe=0;
+                while(1){
+                    playlist.push(beatCycle[x][jk]);
+                    playlistt.push(beatCyclet[x][jk]);
+                    
+                    if(beatCyclet[x][jk]==2){
+                        countwe++;
+                    }
+                    jk++;
+                    if(countwe%2==0&&jk-countwe/2==tapcyc_1){
+                        break;
+                    }
+                }
+                beatused = jk-countwe/2;
+                countwe =0;
+                var jf =0;
+                while(1){
+                    playlist.push(filler[x][jf]);
+                    playlistt.push(fillert[x][jf]);
+                    
+                    if(filler[x][jf]==2){
+                        countwe++;
+                    }
+                    jf++;
+                    if(countwe%2==0&&jf==filler[x].length){
+                        break;
+                    }
+                }
+                beatused = tapcyc_1+fillers[x]-beatCycles[x];
+                tp++;
+                jk =0;
+                countwe=0;
+                while(1){
+                    if(beatCyclet[x][jk]==2){
+                        countwe++;
+                    }
+                    jk++;
+                    if(countwe%2==0&&jk-countwe/2==beatused){
+                        break;
+                    }
+                }
+                countwe=0;
+                jn=0;
+                while(1){
+                    playlist.push(beatCycle[x][jk]);
+                    playlistt.push(beatCyclet[x][jk]);
+                    
+                    if(beatCyclet[x][jk]==2){
+                        countwe++;
+                    }
+                    jk++;
+                    jn++;
+                    if(countwe%2==0&&jn-countwe/2+beatused==beatCycles[x]){
+                        break;
+                    }
+                }
+                
+                return;
+            }
+            
         }
         
         
     }
 
-    
-    console.log(tp);
+    tapcyc_0=0 
     
     playlist = playlist.concat(beatCycle[x]);
     playlistt=playlistt.concat(beatCyclet[x]);
@@ -400,16 +679,22 @@ function playing(){
     
     if(playlist.length==0){
         addcycle();
-        
     }
+    console.log(playlist);
+    
     if(tapbut==1){
-         tapcyc_0 += 1.0/cnt[x];
-         tapcyc = Math.round(tapcyc_0);
-        document.getElementById("tap").value ="Mark Transition 2 at beatcycle " + tapcyc +' ('+tapcyc_0+')' ; 
+         tapcyc_0 += 1.0/(4*playlistt[0]);
+         tapcyc_1 = Math.round(tapcyc_0)*4;
+         tapcyc_2 += 1.0/(beatCycles[x]*playlistt[0]);
+         tapcyc = Math.round(tapcyc_2);
+         firstplayed =true; 
+        document.getElementById("tap").value ="Mark Transition 2 at beatcycle " + tapcyc +' ('+tapcyc_2+')' ; 
     }
+    
     beat=playlist[0];
-    console.log(playlist[0]);
+
     k=playlistt[0];
+    
     playlist.shift();
     playlistt.shift();
     bpmcurr=bpm*k;
@@ -418,7 +703,7 @@ function playing(){
         document.getElementById("visualization").innerHTML="The Current Playing Beat is " + (temp) ;
         if(temp==mx)temp=0;
     }
-    document.getElementById("visual_bpm").innerHTML="The Current Playing Beat is " + (bpm) ;
+    document.getElementById("visual_bpm").innerHTML="The Current Playing BPM is " + (bpm) ;
     clearInterval(t);
 
     audio[i] = new Audio();
@@ -427,10 +712,10 @@ function playing(){
     
     audio[i].loop = false;
     audio[i]=beat[0];
-    if(beat[0]==blnk || beat[0]==blnk0)audio[i].volume=0.0;
-    console.log(k);
+    
+  
     audio[i].play();
-    console.log(playlist);
+    console.log(audio[i]);
     i++;
     
     loop();
@@ -442,16 +727,12 @@ function playing(){
 
 function loop(){
     document.getElementById("bpm").innerHTML= bpm + " BPM";
-    console.log(bpm);
-    if(playlist.length>0){
-        console.log("beat"+beat[0]);
-        console.log(playlist[0][0]);
-    }
+   
     
     
     if(playlist.length>0) t = setInterval(playing,60.0*1000/(bpmcurr)+1000*dict[beat[0]]-1000*dict[playlist[0][0]]);
     else t = setInterval(playing,60.0*1000/(bpmcurr)-1000*dict[beat[0]]+1000*dict[beatCycle[x][0][0]]);
-    console.log(t);
+    
 }
 
 function reset(){
@@ -469,13 +750,15 @@ function reset(){
     tapbut=0;
     tapcyc=0;
     tapcyc_0=0;
+    tapcyc_1=0;
+    tapcyc_2=0;
     
 
 }
 
 
 function tap(){
-    if(x==2){
+    if(tranenabled[x]==1){
         if(tapbut<2)tapbut++;
         document.getElementById("tap").value ="Mark Transition 2 at beatcycle " + tapcyc; 
         if(tapbut==2)document.getElementById("tap").value =tapcyc;
@@ -495,118 +778,124 @@ function addtofav(){
         new_element.setAttribute('id',"fav"+nooffav)
         new_element.setAttribute('class',"col-12")
         new_element.setAttribute('style',"padding-top:10px;")
-        console.log(x);
-        if(x==0)fav_style ="Kartaal (4)";
-        else if(x==1)fav_style ="Kartaal (3)";
-        else if(x==2)fav_style ="Mridanga (16)";
-        else if(x==3)fav_style ="Mridanga (8)";
-        var temparr = ["fav"+nooffav,x, bpm,bpm_velocity, tapbut, tapcyc];
+
+        fav_style= style[x];
+        
+        var temparr = ["fav"+nooffav,x, bpm,bpm_velocity, tapbut, tapcyc,tapcyc_1];
         favarr.push(temparr);
         temparr =[];
-        new_element.innerHTML =  "<div class=container><div class=row><div class=col-5>"+fav_style+"</div><div class=col-2>"+ bpm +"</div><div class=col-3><button onclick= fav_play("+ bpm +','+ x +','+bpm_velocity+','+tapcyc+','+ tapbut +") style=color:#AC9B9B;background:rgba(2,15,40,0.64);border-radius:15px;> Play </button></div><div class=col-2><button onclick= fav_delete(fav"+nooffav+") style =color:#AC9B9B;background:rgba(2,15,40,0.64);border-radius:15px;> Delete </button></div></div></div>" ;
+        new_element.innerHTML =  "<div class=container><div class=row><div class=col-5>"+fav_style+"</div><div class=col-2>"+ bpm +"</div><div class=col-3><button onclick= fav_play("+ bpm +','+ x +','+bpm_velocity+','+tapcyc+','+ tapbut +','+tapcyc_1+") style=color:#AC9B9B;background:rgba(2,15,40,0.64);border-radius:15px;> Play </button></div><div class=col-2><button onclick= fav_delete(fav"+nooffav+") style =color:#AC9B9B;background:rgba(2,15,40,0.64);border-radius:15px;> Delete </button></div></div></div>" ;
         document.getElementById("fav").appendChild(new_element);
-        savefav();
+       
         
     }
 
-    function savefav(){
-        document.getElementById("savefav").innerHTML = favarr;
-    }
 
-    function showfav(){
-        var a = document.getElementById("showfav").value;
-        console.log(a.length);
-        
-        z=0;
-        while(z<a.length){
-            nooffav++;
-            var new_element = document.createElement("div");
-            new_element.setAttribute('id',"fav"+nooffav)
-            new_element.setAttribute('class',"col-12")
-            new_element.setAttribute('style',"padding-top:10px;")
-            fav_save_x_s ="";
-            fav_save_bpm_s = "";
-            fav_save_bpm_velocity_s ="";
-            fav_save_tapbut_s="";
-            fav_save_tapcyc_s="";
-            for(;a[z]!=',';z++){
 
-            }
-            z++;
-            for(;a[z]!=',';z++){
-                fav_save_x_s+=a[z];
-            }
-            fav_save_x =parseInt(fav_save_x_s);
-            console.log(fav_save_x);
-            z++;
-            for(;a[z]!=',';z++){
-                fav_save_bpm_s+=a[z];
-            }
-            fav_save_bpm = parseInt(fav_save_bpm_s);
-            console.log(fav_save_bpm);
-            z++;
-            for(;a[z]!=',';z++){
-                fav_save_bpm_velocity_s +=a[z];
-            }
-            fav_save_bpm_velocity =parseInt(fav_save_bpm_velocity_s);
-            console.log(fav_save_bpm_velocity);
-            z++;
-            for(;a[z]!=',';z++){
-                fav_save_tapbut_s +=a[z];
-            }
-            fav_save_tapbut = parseInt(fav_save_tapbut_s);
-            console.log(fav_save_tapbut);
-            z++;
-            for(;a[z]!=','&&z!=a.length;z++){
-                
-                fav_save_tapcyc_s +=a[z];
-            }
-            fav_save_tapcyc =parseInt(fav_save_tapcyc_s);
-            console.log(fav_save_tapcyc);
-            z++;
-            if(fav_save_x==0)fav_save_style ="Kartaal (4)";
-            else if(fav_save_x==1)fav_save_style ="Kartaal (3)";
-            else if(fav_save_x==2)fav_save_style ="Mridanga (16)";
-            else if(fav_save_x==3)fav_save_style ="Mridanga (8)";
-            var temparr = ["fav"+nooffav,fav_save_x, fav_save_bpm,fav_save_bpm_velocity, fav_save_tapbut, fav_save_tapcyc];
-            favarr.push(temparr);
-            temparr =[];
-            new_element.innerHTML =  "<div class=container><div class=row><div class=col-5>"+fav_save_style+"</div><div class=col-2>"+ fav_save_bpm +"</div><div class=col-3><button onclick= fav_play("+ fav_save_bpm +','+ fav_save_x +','+fav_save_bpm_velocity+','+fav_save_tapcyc+','+ fav_save_tapbut +") style=color:#AC9B9B;background:rgba(2,15,40,0.64);border-radius:15px;> Play </button></div><div class=col-2><button onclick= fav_delete(fav"+nooffav+") style =color:#AC9B9B;background:rgba(2,15,40,0.64);border-radius:15px;> Delete </button></div></div></div>" ;
-            document.getElementById("fav").appendChild(new_element);
-            savefav();
+function showfav(){
+    var a = document.getElementById("showfav").value;
+    z=0;
+    while(z<a.length){
+        nooffav++;
+        var new_element = document.createElement("div");
+        new_element.setAttribute('id',"fav"+nooffav)
+        new_element.setAttribute('class',"col-12")
+        new_element.setAttribute('style',"padding-top:10px;")
+        var fav_save_x_s ="";
+        var fav_save_bpm_s = "";
+        var fav_save_bpm_velocity_s ="";
+        var fav_save_tapbut_s="";
+        var fav_save_tapcyc_s="";
+        var fav_save_tapcyc_1_s="";
+        for(;a[z]!=',';z++){
+
         }
-        
-
-
-
-    }
-
-    function fav_delete(fav_number){
-        console.log(fav_number.id);
-        console.log(favarr[0]);
-        for(d=0;d<favarr.length;d++){
-            if(favarr[d].indexOf(fav_number.id)==0){
-                favarr.splice(d,1);
-                break;
-            }
+        z++;
+        for(;a[z]!=',';z++){
+            fav_save_x_s+=a[z];
         }
-        savefav();
-
-        fav_number.remove();
-    }
-    function fav_play(fav_bpm,temp_style,fav_bpm_velocity ,fav_tapcyc,fav_tapbut){
-        
-        temp_bpm = fav_bpm;
-        temp_bpm_velocity = fav_bpm_velocity;
-        temp_tapcyc = fav_tapcyc;
-        temp_tapbut = fav_tapbut;
-        
-        x = temp_style;
-        
-        flag1 =1
-    }  
-
+        var fav_save_x =parseInt(fav_save_x_s);
            
+        z++;
+        for(;a[z]!=',';z++){
+            fav_save_bpm_s+=a[z];
+        }
+        var fav_save_bpm = parseInt(fav_save_bpm_s);
+           
+        z++;
+        for(;a[z]!=',';z++){
+            fav_save_bpm_velocity_s +=a[z];
+        }
+        var fav_save_bpm_velocity =parseInt(fav_save_bpm_velocity_s);
             
+        z++;
+        for(;a[z]!=',';z++){
+            fav_save_tapbut_s +=a[z];
+        }
+        var fav_save_tapbut = parseInt(fav_save_tapbut_s);
+           
+        z++;
+        for(;a[z]!=','&&z!=a.length;z++){
+                
+            fav_save_tapcyc_s +=a[z];
+        }
+        var fav_save_tapcyc =parseInt(fav_save_tapcyc_s);
+            
+        z++;
+        for(;a[z]!=','&&z!=a.length;z++){
+                
+            fav_save_tapcyc_1_s +=a[z];
+        }
+        var fav_save_tapcyc_1 =parseInt(fav_save_tapcyc_1_s);
+        z++;
+            
+        var fav_save_style= style[fav_save_x];
+            
+        var temparr = ["fav"+nooffav,fav_save_x, fav_save_bpm,fav_save_bpm_velocity, fav_save_tapbut, fav_save_tapcyc, fav_save_tapcyc_1];
+        favarr.push(temparr);
+        temparr =[];
+        new_element.innerHTML =  "<div class=container><div class=row><div class=col-5>"+fav_save_style+"</div><div class=col-2>"+ fav_save_bpm +"</div><div class=col-3><button onclick= fav_play("+ fav_save_bpm +','+ fav_save_x +','+fav_save_bpm_velocity+','+fav_save_tapcyc+','+ fav_save_tapbut +','+fav_save_tapcyc_1+") style=color:#AC9B9B;background:rgba(2,15,40,0.64);border-radius:15px;> Play </button></div><div class=col-2><button onclick= fav_delete(fav"+nooffav+") style =color:#AC9B9B;background:rgba(2,15,40,0.64);border-radius:15px;> Delete </button></div></div></div>" ;
+        document.getElementById("fav").appendChild(new_element);
+      
+    }
+        
+
+
+
+}
+
+function fav_delete(fav_number){
+        
+    for(d=0;d<favarr.length;d++){
+        if(favarr[d].indexOf(fav_number.id)==0){
+            favarr.splice(d,1);
+            break;
+        }
+    }
+   
+
+    fav_number.remove();
+}
+function fav_play(fav_bpm,temp_style,fav_bpm_velocity ,fav_tapcyc,fav_tapbut,fav_tapcyc_1){
+        
+    temp_bpm = fav_bpm;
+    temp_bpm_velocity = fav_bpm_velocity;
+    temp_tapcyc = fav_tapcyc;
+    temp_tapcyc_1 = fav_tapcyc_1;
+    temp_tapbut = fav_tapbut;
+        
+    x = temp_style;
+        
+    flag1 =1
+}  
+function Clipboard_CopyTo() {
+    var tempInput = document.createElement("input");
+    tempInput.value = favarr;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand("copy");
+    document.body.removeChild(tempInput);
+  }
+        
        
             

@@ -17,7 +17,8 @@
 </head>
 
 <body>
-   
+    
+     
 <div class="container" style="padding-top :50px">
     <div class="row">
         <div class="col-xl ">
@@ -27,9 +28,9 @@
             <div style ="display: flex;
             justify-content: center;
             align-items: center;">
-                <button  class="btn btn-secondary btn-rounded"  style="background: #615C5C;" onclick="sub1()" > - </button>
+                <button  class="btn btn-secondary btn-rounded"  style="background: #615C5C;" onclick="sub1()" data-toggle="tooltip" data-placement="top" title="Decrease BPM by 1"> - </button>
                 <label id = "bpm" style ="padding-left: 20px;padding-right: 40px;color:white" > 100 BPM </label>
-                <button class=" btn btn-secondary btn-rounded"  style="background: #615C5C;" onclick="plus1()"  > + </button>
+                <button class=" btn btn-secondary btn-rounded"  style="background: #615C5C;" onclick="plus1()" data-toggle="tooltip" data-placement="top" title="Increase BPM by 1"  > + </button>
             </div>   
             <div class="form-group" style="padding-top: 20px;display: flex;
             justify-content: center;
@@ -48,20 +49,20 @@
                 text-align: center;
                 font-weight: normal;
                 color: white;">BPM Velocity</label>
-                <input id="bpm_velo" class='form-control' type="number" value='0'
-                min='0' max='50' onchange="bpmvel()">
+                <input id="bpm_velo" ata-toggle="tooltip" data-placement="top" title="Enter BPM Velocity" class='form-control' type="number" value='0'
+                min='0' max='50' onchange="bpmvel()" >
             </div>
            <div class="container">
                <div class="row">
                 <div class='col-sm-4'style="padding-top:20px;">
                     <input id="start" class="form-control btn btn-secondary"
-                   type="button" value="Start" onclick ="toggle()" style ="color: #AC9B9B;background: rgba(2, 15, 40, 0.64);
+                   type="button"  value="Start" onclick ="toggle()" style ="color: #AC9B9B;background: rgba(2, 15, 40, 0.64);
                    border-radius: 15px;font-weight: 500;
 font-size: 24px;"/>
                 </div>
                 <div class='col-sm-8'style="padding-top:20px;">
                     <input id="addtofav" class="form-control btn btn-secondary"
-                   type="button" value="Add to Favourites" onclick='addtofav()'style ="color: #AC9B9B;background: rgba(2, 15, 40, 0.64);
+                   type="button" value="Add to Favourites" data-toggle="tooltip" data-placement="top" title="Save the current setting to your favourites" onclick='addtofav()'style ="color: #AC9B9B;background: rgba(2, 15, 40, 0.64);
                    border-radius: 15px;font-weight: 500;
 font-size: 24px;"/>
                 </div>
@@ -73,13 +74,13 @@ font-size: 24px;"/>
                 <div class='row'>
                     <div class='col-sm-8'style="padding-top:20px;">
                         <input id="tap" class="form-control btn btn-secondary"
-                   type="button" value="No Transition " onclick="tap()" style ="color: #AC9B9B;background: rgba(2, 15, 40, 0.64);
+                   type="button" value="No Transition "data-toggle="tooltip" data-placement="top" title="Tap for transition" onclick="tap()" style ="color: #AC9B9B;background: rgba(2, 15, 40, 0.64);
                    border-radius: 15px;font-weight: 500;
 font-size: 20px;"/>
                    </div>
                    <div class="col-sm-4"style="padding-top:20px;">
                         <input id="reset" class="form-control btn btn-secondary"
-                    type="button" value="Reset" onclick="reset()"style ="color: #AC9B9B;background: rgba(2, 15, 40, 0.64);
+                    type="button" value="Reset" data-toggle="tooltip" data-placement="top" title="Reset Transition" onclick="reset()"style ="color: #AC9B9B;background: rgba(2, 15, 40, 0.64);
                     border-radius: 15px;font-weight: 500;
  font-size: 24px;"/>
                    </div>
@@ -94,8 +95,14 @@ font-size: 20px;"/>
                 <div class ="fonts2" style="font-family: Poppins;font-style: normal;font-weight: normal;line-height: 108px;color: white;display: flex; justify-content: center;align-items: center;">
                     Play your favourites 
                 </div>
-                <div>
-                    <input id="showfav" class='form-control' onchange="showfav()">
+                <div class="float-right" style="padding-bottom:15px;">
+                    <button onclick="Clipboard_CopyTo()" style ="color: #AC9B9B;background: rgba(2, 15, 40, 0.64);
+                    border-radius: 15px;font-weight: 500;
+      font-size: 24px;">Copy to Clipboard</button>
+                </div>
+             
+                <div >
+                    <input data-toggle="tooltip" data-placement="top" title="Enter the encoded string to add previous favourites."  id="showfav" class='form-control' onchange="showfav()">
                 </div>
                 <div class="row" id="fav">
                 
